@@ -11,3 +11,51 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.page-item {
+  align-items: center;
+  color: #FFF;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.disabled-page {
+  color: #808e9b;
+}
+
+.active {
+  border: solid 1px #808e9b;
+  border-radius: 40px;
+  color: #808e9b;
+}
+
+.break-me {}
+
+.next {
+  margin-left: 30px;
+}
+
+.pagination {
+  padding: 0;
+  align-items: center;
+  background-color: #a4bac2a8;
+  display: flex;
+  flex-direction: row;
+  height: 60px;
+  justify-content: center;
+  list-style-type: none;
+  position: relative;
+  width: 100vw;
+}
+
+.pagination-page {
+  font-weight: 700;
+}
+
+.previous {
+  margin-right: 30px;
+}
