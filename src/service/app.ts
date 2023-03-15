@@ -4,7 +4,11 @@ const baseURL = 'https://api.wisey.app/api/v1';
 
 export const getToken = async () => {
     const response = await axios.get(
-        `${baseURL}/auth/anonymous?platform=subscriptions`,
+        `${baseURL}/auth/anonymous?platform=subscriptions`, {
+        headers: {
+            "Access-Control-Allow-Origin": "*",
+        },
+    }
     );
     return response.data.token;
 }
