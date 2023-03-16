@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactHlsPlayer from 'react-hls-player/dist';
+import ReactHlsPlayer from 'react-hls-player';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { Course } from '../types/Courses';
