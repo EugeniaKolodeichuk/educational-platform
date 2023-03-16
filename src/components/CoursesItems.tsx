@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactHlsPlayer from 'react-hls-player/dist';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { Course } from '../types/Courses';
@@ -25,9 +26,6 @@ const CoursesItems = ({ currentCourses }: Props) => {
           <div key={course.id}>
             <h3>{course.title}</h3>
             <img src={`${course.previewImageLink}/cover.webp`} width="300px" alt="preview" />
-            <video id="video" width="600" data-setup="{}" controls>
-              <source src={course?.meta?.courseVideoPreview?.link} type="application/x-mpegURL" />
-            </video>
             <p>{course.description}</p>
             <p>
               {`${course.lessonsCount}`} <b>{course.lessonsCount > 1 ? 'lessons' : 'lesson'}</b>
@@ -47,6 +45,17 @@ const CoursesItems = ({ currentCourses }: Props) => {
             ) : (
               <b>For beginners</b>
             )}
+            <ReactHlsPlayer
+              src={course?.meta?.courseVideoPreview?.link}
+              poster={`${course.previewImageLink}/cover.webp`}
+              autoPlay={false}
+              controls={true}
+              width="300px"
+              height="auto"
+              muted
+              onMouseOver={event => event?.currentTarget?.play()}
+              onMouseOut={event => event?.currentTarget?.pause()}
+            />
             {course.containsLockedLessons && <b>This course contains locked lessons</b>}
             <button>
               <Link to={`/${course.id}`}>More information</Link>

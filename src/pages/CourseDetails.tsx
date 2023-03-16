@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react';
+import ReactHlsPlayer from 'react-hls-player/dist';
 import { useParams } from 'react-router-dom';
 import { getCourseInfo } from '../service/app';
 import { CourseObject, Lesson } from '../types/Course';
+import { AiOutlineLock, AiOutlineUnlock } from 'react-icons/ai';
 
 const CourseDetails = () => {
   const { courseId } = useParams();
   const [course, setCourse] = useState<CourseObject | undefined>();
+  const [videoLesson, setVideoLesson] = useState<number | null>(null);
 
   useEffect(() => {
     try {
@@ -26,12 +29,15 @@ const CourseDetails = () => {
       {course ? (
         <div>
           <h3>{course.title}</h3>
-          <img src={`${course.previewImageLink}/cover.webp`} alt="courseImage" />
-          <div>
-            <video id="video" width="600" data-setup="{}" controls>
-              <source src={course.meta.courseVideoPreview.link} type="application/x-mpegURL" />
-            </video>
-          </div>
+
+          <ReactHlsPlayer
+            src={course.meta.courseVideoPreview.link}
+            poster={`${course.previewImageLink}/cover.webp`}
+            autoPlay={false}
+            controls={true}
+            width="300px"
+            height="auto"
+          />
 
           <p>{course.description}</p>
           <p>
@@ -39,7 +45,28 @@ const CourseDetails = () => {
             {course.lessons.length > 1 ? 'lessons' : 'lesson'}:
           </p>
           {course.lessons.length &&
-            course.lessons.map((lesson: Lesson) => <p key={lesson.id}>{lesson.title}</p>)}
+            course.lessons.map((lesson: Lesson) => (
+              <div key={lesson.id}>
+                <p onClick={() => setVideoLesson(lesson.order)}>
+                  {lesson.order}. {lesson.title}
+                  <span>
+                    {lesson.status === 'locked' ? <AiOutlineLock /> : <AiOutlineUnlock />}
+                  </span>
+                </p>
+                {videoLesson === lesson.order && lesson.status === 'unlocked' && (
+                  <ReactHlsPlayer
+                    src={lesson.link}
+                    autoPlay={true}
+                    controls={true}
+                    width="300px"
+                    height="auto"
+                  />
+                )}
+                {videoLesson === lesson.order && lesson.status === 'locked' && (
+                  <p>This lesson locked</p>
+                )}
+              </div>
+            ))}
         </div>
       ) : (
         <p>Loading...</p>
