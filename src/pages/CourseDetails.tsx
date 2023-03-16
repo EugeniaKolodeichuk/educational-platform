@@ -64,6 +64,8 @@ const CourseDetails = () => {
     })
     .sort((a: any, b: any) => a.order - b.order);
 
+  const currentLesson = savedVideoOptions && JSON.parse(savedVideoOptions).lessonOrder;
+
   return (
     <div>
       {course ? (
@@ -107,11 +109,7 @@ const CourseDetails = () => {
                       onSaveVideoProgress(course.title, lesson.order, e.currentTarget.currentTime)
                     }
                     hlsConfig={{
-                      startPosition:
-                        savedVideoOptions &&
-                        JSON.parse(savedVideoOptions).lessonOrder === lesson.order
-                          ? startAt
-                          : -1,
+                      startPosition: currentLesson === lesson.order ? startAt : -1,
                     }}
                   />
                 )}
