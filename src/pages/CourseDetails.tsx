@@ -2,24 +2,27 @@ import React, { useEffect, useState } from 'react';
 import ReactHlsPlayer from 'react-hls-player/dist';
 import { useParams } from 'react-router-dom';
 import { getCourseInfo } from '../service/app';
-import { CourseObject } from '../types/Course';
+import { Course } from '../types/Course';
 import LessonsItems from '../components/LessonsItems';
 import Loader from '../components/Loader';
 
 const CourseDetails = () => {
   const { courseId } = useParams();
-  const [course, setCourse] = useState<CourseObject | undefined>();
+  const [course, setCourse] = useState<Course | undefined>();
 
   useEffect(() => {
-    try {
-      if (courseId) {
-        getCourseInfo(courseId).then(data => {
+    const fetchData = async () => {
+      try {
+        if (courseId) {
+          const data = await getCourseInfo(courseId);
           setCourse(data);
-        });
+        }
+      } catch (error) {
+        console.error(error);
       }
-    } catch {
-      console.error();
-    }
+    };
+
+    fetchData();
   }, [courseId]);
 
   return (

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
 import { getAllCourses } from '../service/app';
-import { Course } from '../types/Courses';
+import { Course } from '../types/Course';
 import CoursesItems from '../components/CoursesItems';
 import Loader from '../components/Loader';
 
@@ -12,12 +12,32 @@ const Courses = ({ itemsPerPage = 10 }) => {
   const [itemOffset, setItemOffset] = useState(0);
 
   useEffect(() => {
-    try {
-      getAllCourses().then(data => setCourses(data));
-    } catch {
-      console.error();
-    }
+    const fetchData = async () => {
+      try {
+        const data = await getAllCourses();
+        setCourses(data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
   }, []);
+
+  /* useEffect(() => {
+    const fetchData = async () => {
+      try {
+        if (courseId) {
+          const data = await getCourseInfo(courseId);
+          setCourse(data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    fetchData();
+  }, [courseId]); */
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
@@ -28,7 +48,7 @@ const Courses = ({ itemsPerPage = 10 }) => {
     window.scrollTo({ top: 0, left: 0, behavior: 'smooth' });
   }, [itemOffset, itemsPerPage, courses]);
 
-  const handlePageClick = (event: { selected: number }) => {
+  const handlePageChange = (event: { selected: number }) => {
     if (courses) {
       const newOffset = (event.selected * itemsPerPage) % courses.length;
       setItemOffset(newOffset);
@@ -42,7 +62,7 @@ const Courses = ({ itemsPerPage = 10 }) => {
           <CoursesItems currentCourses={currentItems} />
           <ReactPaginate
             nextLabel=">"
-            onPageChange={handlePageClick}
+            onPageChange={handlePageChange}
             pageRangeDisplayed={3}
             marginPagesDisplayed={2}
             pageCount={pageCount}

@@ -24,12 +24,14 @@ const requestCoursesData = async (token: string) => {
 }
 
 export const getAllCourses = async () => {
-    let courses;
-    await getToken()
-        .then(token => requestCoursesData(token).then(data => {
-            courses = data.courses
-        }))
-    return courses
+    try {
+        const token = await getToken();
+        const data = await requestCoursesData(token);
+        return data.courses;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error fetching courses data');
+    }
 }
 
 export const requestCourseData = async (token: string, courseId: string) => {
@@ -44,10 +46,12 @@ export const requestCourseData = async (token: string, courseId: string) => {
 }
 
 export const getCourseInfo = async (courseId: string) => {
-    let courseData;
-    await getToken()
-        .then(token => requestCourseData(token, courseId).then(data => {
-            courseData = data
-        }))
-    return courseData
-} 
+    try {
+        const token = await getToken();
+        const data = await requestCourseData(token, courseId);
+        return data;
+    } catch (error) {
+        console.error(error);
+        throw new Error('Error fetching course data');
+    }
+}

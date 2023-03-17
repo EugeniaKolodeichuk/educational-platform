@@ -8,6 +8,8 @@ export interface Meta {
     slug: string;
     skills: string[];
     courseVideoPreview: CourseVideoPreview;
+    fullCourseProductId?: string;
+    fullCourseProductFamily?: string;
 }
 
 export interface Lesson {
@@ -22,7 +24,7 @@ export interface Lesson {
     meta?: any;
 }
 
-export interface CourseObject {
+export interface Course {
     id: string;
     title: string;
     tags: string[];
@@ -34,5 +36,6 @@ export interface CourseObject {
     rating: number;
     meta: Meta;
     lessons: Lesson[];
+    lessonsCount?: number;
     containsLockedLessons: boolean;
 }

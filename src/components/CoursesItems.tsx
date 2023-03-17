@@ -2,7 +2,7 @@ import React from 'react';
 import ReactHlsPlayer from 'react-hls-player';
 import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
-import { Course } from '../types/Courses';
+import { Course } from '../types/Course';
 import { BsFileEarmarkLock2 } from 'react-icons/bs';
 import Loader from './Loader';
 
@@ -43,7 +43,9 @@ const CoursesItems = ({ currentCourses }: Props) => {
                   <p className="inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200 rounded-t-lg ">
                     {`${course.lessonsCount}`}
 
-                    <b className="pl-1">{course.lessonsCount > 1 ? 'lessons' : 'lesson'}</b>
+                    <b className="pl-1">
+                      {course.lessonsCount && course.lessonsCount > 1 ? 'lessons' : 'lesson'}
+                    </b>
                   </p>
                   <p className="inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200">
                     <b className="pr-1">rating:</b> {course.rating}

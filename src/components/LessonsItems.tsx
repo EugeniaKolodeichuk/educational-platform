@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactHlsPlayer from 'react-hls-player/dist';
 import { AiOutlineLock, AiOutlineUnlock } from 'react-icons/ai';
-import { CourseObject, Lesson } from '../types/Course';
+import { Course, Lesson } from '../types/Course';
 
 interface VideoOptions {
   courseTitle: string;
@@ -10,7 +10,7 @@ interface VideoOptions {
 }
 
 interface Props {
-  course?: CourseObject;
+  course?: Course;
 }
 
 const LessonsItems = ({ course }: Props) => {
@@ -34,11 +34,7 @@ const LessonsItems = ({ course }: Props) => {
     }
   }, [course, courseTitle]);
 
-  const sortedLessons = course?.lessons
-    ?.map(lesson => {
-      return { ...lesson, order: lesson.order };
-    })
-    .sort((a: any, b: any) => a.order - b.order);
+  const sortedLessons = course?.lessons?.sort((a: any, b: any) => a.order - b.order);
 
   const onLessonVideoPlay = (lessonOrder: number) => {
     setLessonNumber(lessonOrder);
