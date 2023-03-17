@@ -23,7 +23,6 @@ export interface Lesson {
 }
 
 export interface CourseObject {
-    map(arg0: (course: any) => JSX.Element): import("react").ReactNode;
     id: string;
     title: string;
     tags: string[];

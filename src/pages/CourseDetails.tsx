@@ -2,21 +2,13 @@ import React, { useEffect, useState } from 'react';
 import ReactHlsPlayer from 'react-hls-player/dist';
 import { useParams } from 'react-router-dom';
 import { getCourseInfo } from '../service/app';
-import { CourseObject, Lesson } from '../types/Course';
-import { AiOutlineLock, AiOutlineUnlock } from 'react-icons/ai';
-
-interface VideoOptions {
-  courseTitle: string;
-  lessonOrder: number;
-  currentTime: number;
-}
+import { CourseObject } from '../types/Course';
+import LessonsItems from '../components/LessonsItems';
+import Loader from '../components/Loader';
 
 const CourseDetails = () => {
   const { courseId } = useParams();
   const [course, setCourse] = useState<CourseObject | undefined>();
-  const [lessonNumber, setLessonNumber] = useState<number | null>(null);
-  const [startAt, setStartAt] = useState<number>(0);
-  const [courseTitle, setCourseTitle] = useState('');
 
   useEffect(() => {
     try {
@@ -30,97 +22,32 @@ const CourseDetails = () => {
     }
   }, [courseId]);
 
-  const savedVideoOptions = localStorage.getItem('videoOptions');
-
-  useEffect(() => {
-    if (savedVideoOptions) {
-      const videoOptions: VideoOptions = JSON.parse(savedVideoOptions);
-      setCourseTitle(videoOptions.courseTitle);
-      if (courseTitle === course?.title) {
-        setStartAt(videoOptions.currentTime);
-        setLessonNumber(videoOptions.lessonOrder);
-
-        onLessonVideoPlay(videoOptions.lessonOrder);
-      }
-    }
-  }, [course]);
-
-  const onLessonVideoPlay = (lessonOrder: number) => {
-    setLessonNumber(lessonOrder);
-  };
-
-  const onSaveVideoProgress = (courseTitle: string, lessonOrder: number, currentTime: number) => {
-    const videoOptions: VideoOptions = {
-      courseTitle,
-      lessonOrder,
-      currentTime,
-    };
-    localStorage.setItem('videoOptions', JSON.stringify(videoOptions));
-  };
-
-  const sortedLessons = course?.lessons
-    ?.map(lesson => {
-      return { ...lesson, order: lesson.order };
-    })
-    .sort((a: any, b: any) => a.order - b.order);
-
-  const currentLesson = savedVideoOptions && JSON.parse(savedVideoOptions).lessonOrder;
-
   return (
-    <div>
+    <div className="container mx-auto flex justify-center flex-col p-5">
       {course ? (
-        <div>
-          <h3>{course.title}</h3>
+        <div className="bg-[#ffffffd0] border border-gray-200 rounded-lg">
           <ReactHlsPlayer
+            className="w-full lg:h-[850px] md:h-[400px] sm:h-72 object-cover max-w-full border border-gray-200 rounded-lg"
             src={course.meta.courseVideoPreview.link}
             poster={`${course.previewImageLink}/cover.webp`}
             autoPlay={false}
             controls={true}
-            width="300px"
-            height="auto"
           />
-          <p>{course.description}</p>
-          <p>
-            This course contains {course.lessons.length}{' '}
-            {course.lessons.length > 1 ? 'lessons' : 'lesson'}:
-          </p>
-          {sortedLessons?.length &&
-            sortedLessons.map((lesson: Lesson) => (
-              <div key={lesson.id}>
-                <p
-                  onClick={() => onLessonVideoPlay(lesson.order)}
-                  className={
-                    lesson.order === lessonNumber && lesson.status === 'unlocked' ? 'font-bold' : ''
-                  }
-                >
-                  {lesson.order}. {lesson.title}
-                  <span>
-                    {lesson.status === 'locked' ? <AiOutlineLock /> : <AiOutlineUnlock />}
-                  </span>
-                </p>
-                {lesson.order === lessonNumber && lesson.status === 'unlocked' && (
-                  <ReactHlsPlayer
-                    src={lesson.link}
-                    autoPlay={false}
-                    controls={true}
-                    width="300px"
-                    height="auto"
-                    onPause={e =>
-                      onSaveVideoProgress(course.title, lesson.order, e.currentTarget.currentTime)
-                    }
-                    hlsConfig={{
-                      startPosition: currentLesson === lesson.order ? startAt : -1,
-                    }}
-                  />
-                )}
-                {lesson.order === lessonNumber && lesson.status === 'locked' && (
-                  <p>This lesson locked</p>
-                )}
-              </div>
-            ))}
+          <h3 className="my-2 text-2xl font-bold tracking-tight text-gray-900 px-5">
+            {course.title}
+          </h3>
+          <p className="font-normal text-gray-700 px-5">{course.description}</p>
+          <div className="p-5">
+            <p className="inline-flex items-center w-full px-4 pb-2 text-md">
+              This course contains {course.lessons.length}{' '}
+              {course.lessons.length > 1 ? 'lessons' : 'lesson'}. Choose lesson to start and when
+              you paused video - your progress will be saved.
+            </p>
+            <LessonsItems course={course} />
+          </div>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Loader />
       )}
     </div>
   );

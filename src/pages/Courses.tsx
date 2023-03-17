@@ -3,6 +3,7 @@ import ReactPaginate from 'react-paginate';
 import { getAllCourses } from '../service/app';
 import { Course } from '../types/Courses';
 import CoursesItems from '../components/CoursesItems';
+import Loader from '../components/Loader';
 
 const Courses = ({ itemsPerPage = 10 }) => {
   const [courses, setCourses] = useState<Course[] | undefined>([]);
@@ -36,28 +37,32 @@ const Courses = ({ itemsPerPage = 10 }) => {
 
   return (
     <>
-      <CoursesItems currentCourses={currentItems} />
-      {currentItems?.length && (
-        <ReactPaginate
-          nextLabel=">"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={3}
-          marginPagesDisplayed={2}
-          pageCount={pageCount}
-          previousLabel="<"
-          pageClassName="page-item pagination-page"
-          pageLinkClassName="page-link"
-          previousClassName="page-item previous"
-          previousLinkClassName="page-link"
-          nextClassName="page-item next"
-          nextLinkClassName="page-link"
-          breakLabel="..."
-          breakClassName="page-item"
-          breakLinkClassName="page-link"
-          containerClassName="pagination"
-          activeClassName="page-item active"
-          disabledClassName="disabled-page"
-        />
+      {currentItems?.length ? (
+        <>
+          <CoursesItems currentCourses={currentItems} />
+          <ReactPaginate
+            nextLabel=">"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={3}
+            marginPagesDisplayed={2}
+            pageCount={pageCount}
+            previousLabel="<"
+            pageClassName="page-item pagination-page"
+            pageLinkClassName="page-link"
+            previousClassName="page-item previous"
+            previousLinkClassName="page-link"
+            nextClassName="page-item next"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="page-item active"
+            disabledClassName="disabled-page"
+          />
+        </>
+      ) : (
+        <Loader />
       )}
     </>
   );

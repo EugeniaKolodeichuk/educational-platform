@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import { v4 as uuidv4 } from 'uuid';
 import { Course } from '../types/Courses';
 import { BsFileEarmarkLock2 } from 'react-icons/bs';
+import Loader from './Loader';
 
 interface Props {
   currentCourses?: Course[];
@@ -19,13 +20,13 @@ const CoursesItems = ({ currentCourses }: Props) => {
   const getTextFormatting = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
 
   return (
-    <div className="container mx-auto flex justify-center">
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 flex justify-center py-4">
+    <div className="container mx-auto flex justify-center p-5">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 justify-center py-4">
         {currentCourses ? (
           sortedCourses?.map((course: Course) => (
             <div
               key={course.id}
-              className="max-w-sm bg-white opacity-85 border border-gray-200 rounded-lg shadow"
+              className="max-w-sm bg-[#ffffffd0] border border-gray-200 rounded-lg shadow"
             >
               <img
                 className="rounded-t-lg object-cover h-64"
@@ -37,7 +38,7 @@ const CoursesItems = ({ currentCourses }: Props) => {
                 <h3 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 ">
                   {course.title}
                 </h3>
-                <p className="mb-3 font-normal text-gray-700 ">{course.description}</p>
+                <p className="mb-3 font-normal text-gray-700">{course.description}</p>
                 <div className=" w-full text-gray-900 bg-white border border-gray-200 rounded-lg ">
                   <p className="inline-flex items-center w-full px-4 py-2 text-sm font-medium border-b border-gray-200 rounded-t-lg ">
                     {`${course.lessonsCount}`}
@@ -89,7 +90,7 @@ const CoursesItems = ({ currentCourses }: Props) => {
                 )}
                 <button
                   type="button"
-                  className="flex mt-4 mr-auto ml-auto text-gray-500 bg-white border opacity-90 border-gray-300 focus:outline-none hover:bg-[#FD8469] hover:text-white focus:ring-4 focus:ring-gray-200 rounded-lg px-4 py-2 font-medium "
+                  className="flex mt-4 mr-auto ml-auto text-[#FD8469] bg-white border border-[#FD8469] hover:border-gray-300 focus:outline-none hover:bg-[#FD8469] hover:text-white focus:ring-4 focus:ring-gray-200 rounded-lg px-4 py-2 font-medium "
                 >
                   <Link to={`/${course.id}`}>More information</Link>
                 </button>
@@ -97,7 +98,7 @@ const CoursesItems = ({ currentCourses }: Props) => {
             </div>
           ))
         ) : (
-          <p>null</p>
+          <Loader />
         )}
       </div>
     </div>
