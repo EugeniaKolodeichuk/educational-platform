@@ -37,26 +37,28 @@ const Courses = ({ itemsPerPage = 10 }) => {
   return (
     <>
       <CoursesItems currentCourses={currentItems} />
-      <ReactPaginate
-        nextLabel=">"
-        onPageChange={handlePageClick}
-        pageRangeDisplayed={3}
-        marginPagesDisplayed={2}
-        pageCount={pageCount}
-        previousLabel="<"
-        pageClassName="page-item pagination-page"
-        pageLinkClassName="page-link"
-        previousClassName="page-item previous"
-        previousLinkClassName="page-link"
-        nextClassName="page-item next"
-        nextLinkClassName="page-link"
-        breakLabel="..."
-        breakClassName="page-item"
-        breakLinkClassName="page-link"
-        containerClassName="pagination"
-        activeClassName="page-item active"
-        disabledClassName="disabled-page"
-      />
+      {currentItems?.length && (
+        <ReactPaginate
+          nextLabel=">"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={3}
+          marginPagesDisplayed={2}
+          pageCount={pageCount}
+          previousLabel="<"
+          pageClassName="page-item pagination-page"
+          pageLinkClassName="page-link"
+          previousClassName="page-item previous"
+          previousLinkClassName="page-link"
+          nextClassName="page-item next"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="page-item active"
+          disabledClassName="disabled-page"
+        />
+      )}
     </>
   );
 };

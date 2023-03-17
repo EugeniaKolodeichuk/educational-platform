@@ -9,6 +9,11 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: url(../src/assets/bg1.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position-y: bottom;
 }
 
 code {
@@ -18,7 +23,7 @@ code {
 
 .page-item {
   align-items: center;
-  color: #FFF;
+  color: #fd8469a6;
   cursor: pointer;
   display: flex;
   font-size: 14px;
@@ -32,7 +37,7 @@ code {
 }
 
 .active {
-  border: solid 1px #808e9b;
+  border: solid 1px #FD8469;
   border-radius: 40px;
   color: #808e9b;
 }
@@ -46,14 +51,14 @@ code {
 .pagination {
   padding: 0;
   align-items: center;
-  background-color: #a4bac2a8;
+  background-color: rgba(255, 255, 255, 0.637);
   display: flex;
   flex-direction: row;
   height: 60px;
   justify-content: center;
   list-style-type: none;
   position: relative;
-  width: 100vw;
+  width: 100%;
 }
 
 .pagination-page {
