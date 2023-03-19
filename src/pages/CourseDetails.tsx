@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import ReactHlsPlayer from 'react-hls-player/dist';
 import { useParams } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import { getCourseInfo } from '../service/app';
 import { Course } from '../types/Course';
 import LessonsItems from '../components/LessonsItems';
@@ -17,8 +18,11 @@ const CourseDetails = () => {
           const data = await getCourseInfo(courseId);
           setCourse(data);
         }
-      } catch (error) {
-        console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        const errorMessage = error.toString().split(' ').slice(1).join(' ');
+        toast.error(errorMessage);
       }
     };
 

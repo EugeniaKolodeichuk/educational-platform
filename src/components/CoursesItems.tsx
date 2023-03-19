@@ -1,9 +1,9 @@
 import React from 'react';
 import ReactHlsPlayer from 'react-hls-player';
 import { Link } from 'react-router-dom';
+import { BsFileEarmarkLock2 } from 'react-icons/bs';
 import { v4 as uuidv4 } from 'uuid';
 import { Course } from '../types/Course';
-import { BsFileEarmarkLock2 } from 'react-icons/bs';
 import Loader from './Loader';
 
 interface Props {
@@ -15,7 +15,7 @@ const CoursesItems = ({ currentCourses }: Props) => {
     ?.map(course => {
       return { ...course, date: new Date(course.launchDate) };
     })
-    .sort((a: any, b: any) => b.date - a.date);
+    .sort((a: Course, b: Course) => b.date - a.date);
 
   const getTextFormatting = (text: string) => text.charAt(0).toLowerCase() + text.slice(1);
 

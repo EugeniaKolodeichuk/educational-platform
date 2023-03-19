@@ -1,11 +1,16 @@
-import { useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
+import { toast } from 'react-hot-toast';
 import { getAllCourses } from '../service/app';
 import { Course } from '../types/Course';
 import CoursesItems from '../components/CoursesItems';
 import Loader from '../components/Loader';
 
-const Courses = ({ itemsPerPage = 10 }) => {
+interface Props {
+  itemsPerPage?: number;
+}
+
+const Courses = ({ itemsPerPage = 10 }: Props) => {
   const [courses, setCourses] = useState<Course[] | undefined>([]);
   const [currentItems, setCurrentItems] = useState<Course[] | undefined>([]);
   const [pageCount, setPageCount] = useState(0);
@@ -16,28 +21,16 @@ const Courses = ({ itemsPerPage = 10 }) => {
       try {
         const data = await getAllCourses();
         setCourses(data);
-      } catch (error) {
-        console.error(error);
+
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      } catch (error: any) {
+        const errorMessage = error.toString().split(' ').slice(1).join(' ');
+        toast.error(errorMessage);
       }
     };
 
     fetchData();
   }, []);
-
-  /* useEffect(() => {
-    const fetchData = async () => {
-      try {
-        if (courseId) {
-          const data = await getCourseInfo(courseId);
-          setCourse(data);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    };
-
-    fetchData();
-  }, [courseId]); */
 
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;

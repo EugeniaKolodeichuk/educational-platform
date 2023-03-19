@@ -34,7 +34,7 @@ const LessonsItems = ({ course }: Props) => {
     }
   }, [course, courseTitle]);
 
-  const sortedLessons = course?.lessons?.sort((a: any, b: any) => a.order - b.order);
+  const sortedLessons = course?.lessons?.sort((a: Lesson, b: Lesson) => a.order - b.order);
 
   const onLessonVideoPlay = (lessonOrder: number) => {
     setLessonNumber(lessonOrder);
