@@ -81,7 +81,7 @@ const LessonsItems = ({ course }: Props) => {
                 src={lesson.link}
                 autoPlay={false}
                 controls={true}
-                poster={`${lesson.previewImageLink}/${lesson.order}.webp`}
+                poster={`${lesson.previewImageLink}/lesson-${lesson.order}.webp`}
                 onPause={e =>
                   onSaveVideoProgress(course.title, lesson.order, e.currentTarget.currentTime)
                 }
